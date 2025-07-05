@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoMiner Pro - Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/signup.css">
+</head>
+
+<body>
+  <div class="bg-animation">
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+  </div>
+
+  <div class="signup-container">
+    <div class="logo-section">
+      <div class="logo-icon">⚡</div>
+      <h1 class="app-title">CRYPTOMINER PRO</h1>
+      <p class="app-subtitle">Mining Made Simple</p>
+    </div>
+
+    <form id="signup-form">
+      <div class="form-group">
+        <input type="text" id="name" class="form-input" placeholder="Full Name" required>
+      </div>
+      <div class="form-group">
+        <input type="text" id="username" class="form-input" placeholder="Username" required>
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" class="form-input" placeholder="Email Address" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" class="form-input" placeholder="Password" required>
+        <div class="password-strength">
+          <div id="password-strength-bar"></div>
+        </div>
+        <div id="password-requirements" class="requirements">
+          <span id="length" class="invalid">8+ chars</span>
+          <span id="upper" class="invalid">A-Z</span>
+          <span id="lower" class="invalid">a-z</span>
+          <span id="number" class="invalid">0-9</span>
+          <span id="special" class="invalid">Special</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <input type="password" id="confirm-password" class="form-input" placeholder="Confirm Password" required>
+        <div id="confirm-msg" class="requirements"></div>
+      </div>
+      <button type="submit" class="submit-btn" id="submit-btn" disabled>Create Account</button>
+    </form>
+
+    <div id="result" class="result-message"></div>
+
+    <div class="login-link">
+      Already have an account? <a href="#" id="login-link">Sign In</a>
+    </div>
+  </div>
+
+  <script type="module" src="/js/signup.js"></script>
+</body>
+
+</html>

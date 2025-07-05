@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+</head>
+<body>
+  <h2>Welcome to the Dashboard!</h2>
+  <p>You are logged in.</p>
+
+  <button id="logout-btn">Logout</button>
+
+  <script>
+    // Optional: check if user is "logged in" (i.e., token exists)
+    // If you saved the token to localStorage after login
+    /*
+    if (!localStorage.getItem('token')) {
+      // Redirect to login if not logged in
+      window.location.href = 'login.html';
+    }
+    */
+
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      // Remove token
+      // localStorage.removeItem('token');
+      // Redirect to login
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

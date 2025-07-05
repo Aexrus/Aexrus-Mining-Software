@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CryptoMiner Pro - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+  <div class="bg-animation">
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+  </div>
+
+  <div class="login-container">
+    <div class="logo-section">
+      <div class="logo-icon">⚡</div>
+      <h1 class="app-title">CRYPTOMINER PRO</h1>
+      <p class="app-subtitle">Mining Made Simple</p>
+    </div>
+
+    <div class="welcome-text">
+      Welcome back, miner!
+    </div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <input type="email" id="email" class="form-input" placeholder="Email Address" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" class="form-input" placeholder="Password" required>
+      </div>
+      
+      <div class="forgot-password">
+        <a href="#" id="forgot-password-link">Forgot Password?</a>
+      </div>
+      
+      <button type="submit" class="login-btn">Access Mining Dashboard</button>
+    </form>
+
+    <div id="login-result" class="result-message"></div>
+
+    <div class="signup-link">
+        New to mining? <a href="#" id="signup-link">Create Account</a>
+    </div>
+  </div>
+
+  <script type="module" src="/js/login.js"></script>
+</body>
+</html>
