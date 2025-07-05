@@ -41,8 +41,18 @@ form.addEventListener('submit', async (e) => {
             // Simulate redirect after success
             setTimeout(() => {
                 // In a real app, redirect to dashboard
-                resultDiv.textContent = 'Welcome to your mining dashboard!';
+                window.location.href = 'dashboard.html';
             }, 2000);
+
+        } else if (data.needConfirmation) {
+            // Special handling for not verified
+            resultDiv.textContent = data.error || "Account not verified. Please check your email.";
+            resultDiv.classList.add('error');
+            // Store email for confirmation page and redirect after a short delay
+            localStorage.setItem('pending_email', email);
+            setTimeout(() => {
+                window.location.href = 'confirm.html';
+            }, 1500);
 
         } else {
             resultDiv.textContent = data.error || "Login failed. Please check your credentials.";

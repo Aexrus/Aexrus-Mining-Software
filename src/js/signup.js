@@ -40,12 +40,15 @@ form.addEventListener('submit', async (e) => {
             resultDiv.textContent = data.message || 'Account created successfully!';
             resultDiv.classList.add('success');
 
+            // Store email for confirmation page
+            localStorage.setItem('pending_email', email);
+
             // Reset form on success
             form.reset();
 
-            // Optional: Auto-redirect to login after 2 seconds
+            // Redirect to confirmation page after 2 seconds
             setTimeout(() => {
-                window.location.href = 'login.html';
+                window.location.href = 'confirm.html';
             }, 2000);
         } else {
             resultDiv.textContent = data.error || "Signup failed";

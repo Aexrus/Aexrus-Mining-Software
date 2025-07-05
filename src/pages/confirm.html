@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Confirmation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/confirm.css">
+</head>
+
+<body>
+  <div class="bg-animation">
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+  </div>
+
+  <div id="confirmation-section">
+    <h2>Confirm Your Email</h2>
+    <p>
+      A confirmation code was sent to <b id="user-email"></b>.<br>
+      Please enter the code below to verify your account:
+    </p>
+    <form id="confirm-form">
+      <div class="form-group">
+        <input type="text" id="code" class="form-input" placeholder="Confirmation Code" required>
+      </div>
+      <button type="submit" id="verify-btn" class="login-btn">
+        <span class="btn-text">VERIFY</span>
+        <div class="btn-spinner"></div>
+      </button>
+    </form>
+    <div id="result" class="result-message"></div>
+    <div class="login-link">
+      Already verified? <a href="login.html">Login here</a>
+    </div>
+  </div>
+  <script type="module" src="../js/confirm.js"></script>
+</body>
+
+</html>
