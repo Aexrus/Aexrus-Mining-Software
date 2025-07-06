@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Forgot Password</title>
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body>
+  <!-- Animated Background -->
+  <div class="bg-animation">
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+  </div>
+
+  <div class="login-container">
+    <!-- Logo Section -->
+    <div class="logo-section">
+      <div class="logo-icon">🔐</div>
+      <h1 class="app-title">PASSWORD RESET</h1>
+      <p class="app-subtitle">SECURE RECOVERY</p>
+    </div>
+
+    <!-- Welcome Text -->
+    <div class="welcome-text">
+      Enter your email to receive a reset code
+    </div>
+
+    <!-- Step 1: Email Input -->
+    <div id="step1">
+      <form id="forgot-form">
+        <div class="form-group">
+          <input type="email" id="reset-email" class="form-input" placeholder="Enter your email address" required>
+        </div>
+        <button type="submit" class="login-btn">Send Reset Code</button>
+      </form>
+    </div>
+
+    <!-- Step 2: Code and New Password -->
+    <div id="step2" style="display:none;">
+      <div class="welcome-text">
+        Enter the code sent to your email and set a new password
+      </div>
+      <form id="reset-form">
+        <div class="form-group">
+          <input type="text" id="reset-code" class="form-input" placeholder="Enter verification code" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="reset-password" class="form-input" placeholder="New Password" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="reset-confirm" class="form-input" placeholder="Confirm New Password" required>
+        </div>
+        <button type="submit" class="login-btn">Set New Password</button>
+      </form>
+    </div>
+
+    <!-- Result Message -->
+    <div id="reset-result" class="result-message" style="display:none;"></div>
+
+    <!-- Back to Login Link -->
+    <div class="signup-link">
+      Remembered your password? <a href="login.html">Login here</a>
+    </div>
+    <script type="module" src="../js/forgot.js"></script>
+</body>
+
+</html>

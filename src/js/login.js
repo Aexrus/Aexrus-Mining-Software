@@ -79,8 +79,7 @@ document.getElementById('signup-link').addEventListener('click', function (e) {
 
 document.getElementById('forgot-password-link').addEventListener('click', function (e) {
     e.preventDefault();
-    // Handle forgot password functionality
-    alert('Forgot password feature would be implemented here');
+    window.location.href = 'forgot.html';
 });
 
 // Input field animations
