@@ -1,73 +1,91 @@
-import { API_BASE_URL } from './api.js';
+// Wait for Tauri to be ready
+window.addEventListener('DOMContentLoaded', async () => {
+    // Import invoke function
+    const { invoke } = window.__TAURI__.tauri;
+    
+    const form = document.getElementById('login-form');
+    const container = document.querySelector('.login-container');
+    const resultDiv = document.getElementById('login-result');
 
-const form = document.getElementById('login-form');
-const container = document.querySelector('.login-container');
-const resultDiv = document.getElementById('login-result');
+    // Check if elements exist
+    if (!form || !container || !resultDiv) {
+        console.error('Required DOM elements not found');
+        return;
+    }
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    // Check auth status when page loads
+    await checkAuthStatus();
 
-    // Add loading state
-    container.classList.add('loading');
-    resultDiv.textContent = '';
-    resultDiv.className = 'result-message';
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
+        // Add loading state
+        container.classList.add('loading');
+        resultDiv.textContent = '';
+        resultDiv.className = 'result-message';
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/login`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        });
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
 
-        const data = await response.json();
+        try {
+            const data = await invoke('login_command', { payload: { email, password } });
 
-        // Remove loading state
-        container.classList.remove('loading');
+            // Remove loading state
+            container.classList.remove('loading');
 
-        if (response.ok) {
-            resultDiv.textContent = 'Login successful! Redirecting to dashboard...';
-            resultDiv.classList.add('success');
-            container.classList.add('success-login');
+            if (data.success) {
+                resultDiv.textContent = 'Login successful! Redirecting to dashboard...';
+                resultDiv.classList.add('success');
+                container.classList.add('success-login');
 
-            // Store token (Note: In production, consider more secure storage)
-            // For Tauri apps, you might want to use Tauri's secure storage
-            // localStorage.setItem('token', data.token);
+                // Store token securely using Tauri's secure storage
+                if (data.token) {
+                    await invoke('store_token_securely', { token: data.token });
+                }
 
-            // Simulate redirect after success
-            setTimeout(() => {
-                // In a real app, redirect to dashboard
-                window.location.href = 'dashboard.html';
-            }, 2000);
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
 
-        } else if (data.needConfirmation) {
-            // Special handling for not verified
-            resultDiv.textContent = data.error || "Account not verified. Please check your email.";
+            } else if (data.needConfirmation) {
+                resultDiv.textContent = data.error || "Account not verified. Please check your email.";
+                resultDiv.classList.add('error');
+                
+                // Store pending email securely
+                await invoke('store_pending_email', { email: email });
+                
+                setTimeout(() => {
+                    window.location.href = 'confirm.html';
+                }, 1500);
+
+            } else {
+                resultDiv.textContent = data.error || "Login failed. Please check your credentials.";
+                resultDiv.classList.add('error');
+                container.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    container.style.animation = '';
+                }, 500);
+            }
+        } catch (err) {
+            container.classList.remove('loading');
+            resultDiv.textContent = "App error. Please try again.";
             resultDiv.classList.add('error');
-            // Store email for confirmation page and redirect after a short delay
-            localStorage.setItem('pending_email', email);
-            setTimeout(() => {
-                window.location.href = 'confirm.html';
-            }, 1500);
-
-        } else {
-            resultDiv.textContent = data.error || "Login failed. Please check your credentials.";
-            resultDiv.classList.add('error');
-
-            // Shake animation on error
-            container.style.animation = 'shake 0.5s ease-in-out';
-            setTimeout(() => {
-                container.style.animation = '';
-            }, 500);
+            console.error('Login error:', err);
         }
-    } catch (err) {
-        container.classList.remove('loading');
-        resultDiv.textContent = "Network error. Please check your connection.";
-        resultDiv.classList.add('error');
+    });
+
+    // Helper function to check if user is already logged in
+    async function checkAuthStatus() {
+        try {
+            const token = await invoke('get_stored_token');
+            if (token) {
+                // User is already logged in, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
+        } catch (err) {
+            // No token stored or error retrieving it, stay on login page
+            console.log('No existing auth token');
+        }
     }
 });
 

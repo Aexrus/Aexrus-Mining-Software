@@ -4,18 +4,26 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "tauri": "tauri",
-    "build": "node build.js",
-    "dev": "tauri dev",
-    "build:tauri": "tauri build",
-    "clean": "rm -rf dist",
-    "optimize": "npm run clean && npm run build"
+  "tauri": "tauri",
+  "dev": "tauri dev",
+  "build": "tauri build",
+  "clean": "rm -rf dist"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.6.3"
+    "@tauri-apps/cli": "^1.6.3",
+    "@vitejs/plugin-basic-ssl": "^2.1.0"
   },
   "description": "Aexrus Mining Software - A modern desktop application for cryptocurrency mining",
-  "keywords": ["mining", "cryptocurrency", "desktop", "tauri", "rust"],
+  "keywords": [
+    "mining",
+    "cryptocurrency",
+    "desktop",
+    "tauri",
+    "rust"
+  ],
   "author": "Aexrus Team",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@tauri-apps/api": "^2.6.0"
+  }
 }

@@ -3,15 +3,25 @@
     windows_subsystem = "windows"
 )]
 
-// This is the function that will be called from JS
-#[tauri::command]
-fn say_hi() -> String {
-    "Hi".to_string()
-}
+mod models;
+mod storage;
+mod commands;
+mod config;
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![say_hi])
+        .invoke_handler(tauri::generate_handler![
+            commands::login_command,
+            commands::signup_command,
+            commands::confirm_email_command,
+            commands::store_token_securely,
+            commands::request_reset_command,
+            commands::reset_password_command,
+            commands::get_stored_token,
+            commands::store_pending_email,
+            commands::get_pending_email,
+            commands::clear_auth_data
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

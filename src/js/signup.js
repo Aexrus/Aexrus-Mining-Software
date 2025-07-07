@@ -1,13 +1,9 @@
-import { API_BASE_URL } from './api.js';
-
 const form = document.getElementById('signup-form');
 const container = document.querySelector('.signup-container');
 const resultDiv = document.getElementById('result');
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    // Add loading state
     container.classList.add('loading');
     resultDiv.textContent = '';
     resultDiv.className = 'result-message';
@@ -18,38 +14,17 @@ form.addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch(`${API_BASE_URL}/signup`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name,
-                username,
-                email,
-                password
-            })
+        const data = await window.__TAURI__.tauri.invoke('signup_command', {
+            payload: { name, username, email, password }
         });
-
-        const data = await response.json();
-
-        // Remove loading state
         container.classList.remove('loading');
 
-        if (response.ok) {
+        if (data.success) {
             resultDiv.textContent = data.message || 'Account created successfully!';
             resultDiv.classList.add('success');
-
-            // Store email for confirmation page
-            localStorage.setItem('pending_email', email);
-
-            // Reset form on success
+            await window.__TAURI__.tauri.invoke('store_pending_email', { email });
             form.reset();
-
-            // Redirect to confirmation page after 2 seconds
-            setTimeout(() => {
-                window.location.href = 'confirm.html';
-            }, 2000);
+            setTimeout(() => window.location.href = 'confirm.html', 2000);
         } else {
             resultDiv.textContent = data.error || "Signup failed";
             resultDiv.classList.add('error');
@@ -61,7 +36,7 @@ form.addEventListener('submit', async (e) => {
     }
 });
 
-// Switch to login page using event listener (no inline onclick)
+// Switch to login page using event listener
 document.getElementById('login-link').addEventListener('click', function (e) {
     e.preventDefault();
     window.location.href = 'login.html';

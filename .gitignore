@@ -142,3 +142,4 @@ docs/build/
 # Local development
 .local/
 src/js/api.js
+src-tauri/api_url.txt

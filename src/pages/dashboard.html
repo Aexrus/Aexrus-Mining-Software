@@ -7,26 +7,32 @@
 <body>
   <h2>Welcome to the Dashboard!</h2>
   <p>You are logged in.</p>
-
   <button id="logout-btn">Logout</button>
 
   <script>
-    // Optional: check if user is "logged in" (i.e., token exists)
-    // If you saved the token to localStorage after login
-    /*
-    if (!localStorage.getItem('token')) {
-      // Redirect to login if not logged in
-      window.location.href = 'login.html';
+    const invoke = window.__TAURI__.tauri.invoke;
+
+    // Check if user is logged in with stored token
+    async function checkAuth() {
+      try {
+        const token = await invoke('get_stored_token');
+        if (!token) {
+          window.location.href = 'login.html';
+        }
+      } catch (err) {
+        window.location.href = 'login.html';
+      }
     }
-    */
 
     // Logout functionality
-    document.getElementById('logout-btn').addEventListener('click', () => {
-      // Remove token
-      // localStorage.removeItem('token');
-      // Redirect to login
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      try {
+        await invoke('clear_auth_data');
+      } catch (err) {
+      }
       window.location.href = 'login.html';
     });
+    checkAuth();
   </script>
 </body>
 </html>

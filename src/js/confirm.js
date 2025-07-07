@@ -1,6 +1,4 @@
-import { API_BASE_URL } from './api.js';
-
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Elements
     const userEmailDisplay = document.getElementById('user-email');
     const form = document.getElementById('confirm-form');
@@ -10,20 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnSpinner = verifyBtn.querySelector('.btn-spinner');
     const confirmationSection = document.getElementById('confirmation-section');
 
-    // Get email from localStorage or use fallback
-    const email = getStoredEmail();
-
-    if (email) {
-        userEmailDisplay.textContent = email;
-    } else {
+    // Get email from backend
+    let email = '';
+    try {
+        email = await window.__TAURI__.tauri.invoke('get_pending_email');
+        if (email) {
+            userEmailDisplay.textContent = email;
+        } else {
+            userEmailDisplay.textContent = 'your email address';
+        }
+    } catch (err) {
         userEmailDisplay.textContent = 'your email address';
+        email = '';
     }
 
     // Form submission
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        // Show loading state
         setLoadingState(true);
         clearResult();
 
@@ -34,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
             setLoadingState(false);
             return;
         }
-
         if (!code) {
             showResult("Please enter the confirmation code.", 'error');
             setLoadingState(false);
@@ -42,39 +42,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch(`${API_BASE_URL}/confirm`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, code })
+            // Call Tauri backend (Rust) to verify
+            const data = await window.__TAURI__.tauri.invoke('confirm_email_command', {
+                payload: { email, code }
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
+            if (data.success) {
                 showResult(data.message || "Email verified! You can now log in.", 'success');
                 confirmationSection.classList.add('success-animation');
 
-                // Remove stored email after successful verification
-                removeStoredEmail();
+                // Remove stored email after success
+                await window.__TAURI__.tauri.invoke('clear_auth_data');
 
-                // Redirect after success
                 setTimeout(() => {
                     window.location.href = "login.html";
                 }, 2000);
             } else {
                 showResult(data.error || "Verification failed. Please try again.", 'error');
                 confirmationSection.classList.add('error-animation');
-
-                // Remove error animation after it completes
                 setTimeout(() => {
                     confirmationSection.classList.remove('error-animation');
                 }, 600);
             }
         } catch (err) {
-            console.error('Network error:', err);
-            showResult("Network error. Please check your connection and try again.", 'error');
+            showResult("App error. Please try again.", 'error');
             confirmationSection.classList.add('error-animation');
-
             setTimeout(() => {
                 confirmationSection.classList.remove('error-animation');
             }, 600);
@@ -100,36 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resultDiv.className = 'result-message';
     }
 
-    function getStoredEmail() {
-        try {
-            // Try to get from localStorage first
-            const stored = localStorage.getItem('pending_email');
-            if (stored) return stored;
-
-            // Fallback: check URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const emailParam = urlParams.get('email');
-            if (emailParam) {
-                // Store in localStorage for consistency
-                localStorage.setItem('pending_email', emailParam);
-                return emailParam;
-            }
-
-            return null;
-        } catch (error) {
-            console.error('Error accessing localStorage:', error);
-            return null;
-        }
-    }
-
-    function removeStoredEmail() {
-        try {
-            localStorage.removeItem('pending_email');
-        } catch (error) {
-            console.error('Error removing from localStorage:', error);
-        }
-    }
-
     // Clear result when user starts typing
     document.getElementById('code').addEventListener('input', () => {
         if (resultDiv.classList.contains('show')) {
@@ -144,9 +106,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-// For development/testing purposes - you can remove this in production
-if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    console.log('Development mode: Using demo API endpoints');
-    // You can add demo/mock functionality here if needed
-}

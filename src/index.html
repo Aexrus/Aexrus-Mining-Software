@@ -1,22 +1,290 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Redirecting...</title>
-  <script>
-    // Check for JWT token and redirect accordingly
-    window.onload = function() {
-      const token = localStorage.getItem('jwt_token');
-      if (token) {
-        window.location.href = "pages/dashboard.html";
-      } else {
-        window.location.href = "pages/login.html";
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aexrus Miner Pro - Loading</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Orbitron', monospace;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .bg-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .floating-shape {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-shape:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .floating-shape:nth-child(2) {
+      width: 120px;
+      height: 120px;
+      top: 60%;
+      right: 20%;
+      animation-delay: -2s;
+    }
+
+    .floating-shape:nth-child(3) {
+      width: 60px;
+      height: 60px;
+      bottom: 30%;
+      left: 30%;
+      animation-delay: -4s;
+    }
+
+    .floating-shape:nth-child(4) {
+      width: 100px;
+      height: 100px;
+      top: 10%;
+      right: 10%;
+      animation-delay: -1s;
+    }
+
+    .floating-shape:nth-child(5) {
+      width: 90px;
+      height: 90px;
+      bottom: 10%;
+      right: 30%;
+      animation-delay: -3s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(180deg); }
+    }
+
+    .loading-container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 60px 40px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .app-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 10px;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      letter-spacing: 2px;
+    }
+
+    .app-subtitle {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 40px;
+      font-weight: 400;
+      letter-spacing: 1px;
+    }
+
+    .loading-text {
+      font-size: 1.2rem;
+      color: #ffffff;
+      margin-bottom: 30px;
+      font-weight: 400;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid #ffffff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .status-text {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 400;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00d4ff, #090979);
+      border-radius: 2px;
+      animation: progressFill 1s ease-out forwards;
+    }
+
+    @keyframes progressFill {
+      from { width: 0%; }
+      to { width: 100%; }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .loading-container {
+        padding: 40px 30px;
+        margin: 20px;
       }
-    };
-  </script>
+      
+      .app-title {
+        font-size: 2rem;
+      }
+      
+      .logo-icon {
+        font-size: 3rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Optional: Loading message -->
-  <p>Redirecting...</p>
+  <div class="bg-animation">
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+  </div>
+
+  <div class="loading-container">
+    <div class="logo-icon">⚡</div>
+    <h1 class="app-title">AEXRUS MINER PRO</h1>
+    <p class="app-subtitle">Mining Made Simple</p>
+    
+    <div class="loading-text">Initializing Application...</div>
+    <div class="loading-spinner"></div>
+    <div class="status-text">Please wait while we prepare your dashboard</div>
+    
+    <div class="progress-bar">
+      <div class="progress-fill"></div>
+    </div>
+  </div>
+
+  <script>
+    // Wait for Tauri to be ready
+    window.addEventListener("DOMContentLoaded", async () => {
+      const statusText = document.querySelector('.status-text');
+      const loadingText = document.querySelector('.loading-text');
+      
+      // Update status text
+      statusText.textContent = "Checking authentication...";
+      
+      // Wait for the minimum display time (2000ms)
+      const startTime = Date.now();
+      
+      if (window.__TAURI__?.tauri) {
+        try {
+          loadingText.textContent = "Verifying credentials...";
+          
+          // Try to get the stored token using your Rust command
+          const token = await window.__TAURI__.tauri.invoke("get_stored_token");
+          
+          if (token) {
+            statusText.textContent = "Welcome back! Redirecting to dashboard...";
+            loadingText.textContent = "Authentication successful";
+            
+            // Ensure minimum wait time
+            const elapsed = Date.now() - startTime;
+            const remainingTime = Math.max(0, 2000 - elapsed);
+            
+            setTimeout(() => {
+              window.location.href = "pages/dashboard.html";
+            }, remainingTime);
+          } else {
+            statusText.textContent = "Redirecting to login...";
+            loadingText.textContent = "Authentication required";
+            
+            // Ensure minimum wait time
+            const elapsed = Date.now() - startTime;
+            const remainingTime = Math.max(0, 2000 - elapsed);
+            
+            setTimeout(() => {
+              window.location.href = "pages/login.html";
+            }, remainingTime);
+          }
+        } catch (err) {
+          statusText.textContent = "Redirecting to login...";
+          loadingText.textContent = "Authentication required";
+          
+          // On error, fallback to login with minimum wait time
+          const elapsed = Date.now() - startTime;
+          const remainingTime = Math.max(0, 2000 - elapsed);
+          
+          setTimeout(() => {
+            window.location.href = "pages/login.html";
+          }, remainingTime);
+        }
+      } else {
+        statusText.textContent = "Initializing Tauri environment...";
+        loadingText.textContent = "Loading application framework";
+        
+        // If not running in Tauri, fallback to login with minimum wait time
+        const elapsed = Date.now() - startTime;
+        const remainingTime = Math.max(0, 2000 - elapsed);
+        
+        setTimeout(() => {
+          window.location.href = "pages/login.html";
+        }, remainingTime);
+      }
+    });
+  </script>
 </body>
 </html>
