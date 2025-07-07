@@ -1,3 +1,35 @@
+import { API_BASE_URL } from './api.js';
+
+document.getElementById('google-login-btn').addEventListener('click', () => {
+  // Build the Google OAuth URL using API_BASE_URL (remove trailing slash if needed)
+  let base = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+  const oauthUrl = `${base}/auth/google`;
+
+  const oauthWin = window.open(
+    oauthUrl,
+    'GoogleLogin',
+    'width=500,height=600'
+  );
+});
+
+// Listen for token from OAuth popup
+window.addEventListener('message', async (event) => {
+  // Optional: check event.origin if you want to validate source
+  if (event.data && event.data.token) {
+    // You now have the encrypted JWT token!
+    // Store securely with Tauri invoke
+    try {
+      await window.__TAURI__.tauri.invoke('store_token_securely', { token: event.data.token });
+      // Optionally fetch user profile here
+      // Redirect to dashboard
+      window.location.href = 'dashboard.html';
+    } catch (e) {
+      document.getElementById('login-result').textContent = "Google login error: " + (e.message || "Unknown error");
+      document.getElementById('login-result').classList.add('error');
+    }
+  }
+}, false);
+
 // Wait for Tauri to be ready
 window.addEventListener('DOMContentLoaded', async () => {
     // Import invoke function

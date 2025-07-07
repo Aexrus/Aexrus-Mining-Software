@@ -143,3 +143,4 @@ docs/build/
 .local/
 src/js/api.js
 src-tauri/api_url.txt
+src/assets/
